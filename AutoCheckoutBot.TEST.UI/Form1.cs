@@ -13,6 +13,7 @@ using DotNetBrowser.DOM;
 using DotNetBrowser.Events;
 using DotNetBrowser.WinForms;
 using AutoCheckoutBot.FootLocker;
+using Newtonsoft.Json;
 
 namespace AutoCheckoutBot.TEST.UI
 {
@@ -121,6 +122,10 @@ namespace AutoCheckoutBot.TEST.UI
                 MessageBox.Show(result.ToString());
 
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
         }
     }
 }

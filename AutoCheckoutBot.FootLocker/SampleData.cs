@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoCheckoutBot.FootLocker.Models;
+using Newtonsoft.Json;
 
 namespace AutoCheckoutBot.FootLocker
 {
@@ -11,20 +13,17 @@ namespace AutoCheckoutBot.FootLocker
     {
         public static CheckoutBillerModel SampleBiller()
         {
-            //John Smith
-            //274 Lafayette St, New York, NY 10012
-            //random @resellersindex.com
-            //5424182839182242
-            //01 / 25
-            //123
-            //7184441234
+            var jsonString = File.ReadAllText("Biller.json");
 
+            return JsonConvert.DeserializeObject<CheckoutBillerModel>(jsonString);
 
+            
+        }
 
-            return new CheckoutBillerModel
-            {
-         
-            };
+        public static List<ProxyModel> Proxies()
+        {
+            string json = File.ReadAllText("ProxyList.json");
+            return JsonConvert.DeserializeObject<List<ProxyModel>>(json);
         }
     }
 }
