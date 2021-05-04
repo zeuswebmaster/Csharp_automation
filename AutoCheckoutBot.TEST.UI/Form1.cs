@@ -70,7 +70,7 @@ namespace AutoCheckoutBot.TEST.UI
 
         private async void btnTest1_Click(object sender, EventArgs e)
         {
-            await _browser.OpenUrl("https://www.footlocker.com/product/fila-disruptor-ii-mens/00705422.html", waitEvent);
+            await _browser.OpenUrl("https://www.footlocker.com/product/fila-disruptor-ii-mens/00705422.html", waitEvent, "Page-body");
 
             bool isAddToCartAvaialble =   _browser.IsAddToCartButtonAvailable(waitEvent);
 

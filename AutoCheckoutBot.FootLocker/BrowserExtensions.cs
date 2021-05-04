@@ -42,6 +42,20 @@ namespace AutoCheckoutBot.FootLocker
             await browser.WaitForReady();
         }
 
+        public static async Task OpenUrl(this Browser browser, string url, ManualResetEvent waitEvent, string containerClassName)
+        {
+            waitEvent.Reset();
+            browser.LoadURL(url);
+            waitEvent.WaitOne();
+
+            await browser.WaitForReady(containerClassName);
+        }
+
+        /// <summary>
+        /// Full page 
+        /// </summary>
+        /// <param name="browser"></param>
+        /// <returns></returns>
         static async Task WaitForReady(this Browser browser)
         {
             while (true)
@@ -85,6 +99,58 @@ namespace AutoCheckoutBot.FootLocker
 
         }
 
+        /// <summary>
+        /// Wait for specific container
+        /// </summary>
+        /// <param name="browser"></param>
+        /// <returns></returns>
+        static async Task WaitForReady(this Browser browser, string containerClassName)
+        {
+            while (true)
+            {
+                Debug.WriteLine("waiting for browser ready");
+                bool isLoaderExist = false;
+                for (int i = 10; i <= 100; i += 10)
+                {
+                    try
+                    {
+                        await Task.Delay(i);
+
+                        var container = browser.Doc().GetElementByClassName(containerClassName);
+
+                        if (container == null)
+                            continue;
+
+
+                        isLoaderExist = container.GetElementByClassName("c-loading-curtain") != null ||
+                                        container.GetElementByClassName("global-loading") != null ||
+                                        container.GetElementByClassName("c-loading") != null;
+
+                        Debug.WriteLine($"Is loader exist:{isLoaderExist}");
+                        Debug.WriteLine($"Is add to cart available: {browser.AddToCartButton() != null}");
+
+                        if (isLoaderExist)
+                            break;
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
+                }
+
+                if (isLoaderExist)
+                    continue;
+
+
+
+                Debug.WriteLine("Page is ready");
+                return;
+            }
+
+        }
 
         public static List<DOMNode> ProductStyles(this Browser browser, ManualResetEvent waitEvent)
         {
