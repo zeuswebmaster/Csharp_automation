@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -139,6 +140,10 @@ namespace AutoCheckoutBot.TEST.UI
 
         private void button2_Click(object sender, EventArgs e)
         {
+            KeyParams paramers = new KeyParams(VirtualKeyCode.TAB, (char)9);
+            _browser.KeyDown(paramers);
+            _browser.KeyUp(paramers);
+            Debug.WriteLine("Tab");
         }
     }
 }
