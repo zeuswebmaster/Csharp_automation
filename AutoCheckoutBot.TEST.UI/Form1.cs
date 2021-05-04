@@ -13,6 +13,7 @@ using DotNetBrowser.DOM;
 using DotNetBrowser.Events;
 using DotNetBrowser.WinForms;
 using AutoCheckoutBot.FootLocker;
+using AutoCheckoutBot.FootLocker.Enum;
 using Newtonsoft.Json;
 
 namespace AutoCheckoutBot.TEST.UI
@@ -54,9 +55,16 @@ namespace AutoCheckoutBot.TEST.UI
             ////    Console.Out.WriteLine("DocumentLoadedInMainFrame");
             ////};
 
+            _browser.CacheStorage.ClearCache(() =>
+            {
+                Console.WriteLine("The cache is cleared");
+            });
+            _browser.CacheStorage.ClearHttpAuthenticationCache(() =>
+            {
+                Console.WriteLine("The HTTP authentication data is cleared");
+            });
 
-
-          // _browser.OpenUrl("https://www.footlocker.com/product/fila-disruptor-ii-mens/00705422.html", waitEvent).Wait();
+            // _browser.OpenUrl("https://www.footlocker.com/product/fila-disruptor-ii-mens/00705422.html", waitEvent).Wait();
             //browserView.Browser.LoadURL("https://www.footlocker.com/product/fila-disruptor-ii-mens/00705422.html");
         }
         private async void btnReloadBrowser_Click(object sender, EventArgs e)
@@ -84,6 +92,11 @@ namespace AutoCheckoutBot.TEST.UI
             _browser.AddToCart();
 
          var result = await  _browser.NavigateGuestCheckout(waitEvent);
+
+         if (result == NavigationResultErrorCode.Success)
+         {
+            await _browser.FillCheckoutForm(SampleData.SampleBiller());
+         }
 
             MessageBox.Show(result.ToString());
         }
